@@ -1,0 +1,29 @@
+# UrbanNest Retail Analytics
+
+## Project Purpose
+
+This project explores UrbanNest retail order data and prepares it for analysis in Python and PostgreSQL. The intended business analysis covers revenue, product categories, customer segments, sales channels, and delivery performance.
+
+## Process Flow
+
+1. **Load the source data** - Read `data/UrbanNest_Retail_Dirty_Customer_Order_Dataset.csv` into a pandas DataFrame.
+2. **Inspect the dataset** - Review row and column counts, column names, data types, sample records, and missing values to understand the data quality before analysis.
+3. **Prepare date data** - Parse `order_date` from the CSV's `YYYY-MM-DD` text into a pandas datetime type. Invalid values are coerced to `NaT` so they can be identified during quality checks.
+4. **Analyze business performance** - Use order revenue and order counts to examine overall and monthly performance; group results by product category, customer segment, and sales channel; and assess delivery status and delivery days. Keep missing group labels visible as `Unknown` rather than silently dropping those records.
+5. **Load data into PostgreSQL** - Connect to the local PostgreSQL database and write the DataFrame to the `urbannest_data` table.
+6. **Query the database** - Run the example queries in `queries/urbannest_queries.sql` to inspect dates, identifiers, or the full table.
+
+## Current Notebook Coverage
+
+`urbannest_retail.ipynb` currently loads and inspects the CSV, converts `order_date`, and contains a PostgreSQL export step. The detailed business summaries in step 4 are the intended analysis scope and should be added or run as analysis cells in the notebook before treating them as completed results.
+
+## Running the Project
+
+1. Open the project folder in VS Code and select a Python environment with Jupyter, pandas, SQLAlchemy, and `psycopg2-binary` installed.
+2. Open `urbannest_retail.ipynb` and run the cells from top to bottom.
+3. To run the database export, start PostgreSQL, create the `urbannest_db` database, and update the connection settings in the export cell for your local setup.
+4. Open `queries/urbannest_queries.sql` in a PostgreSQL client and run the desired query after the table has been created.
+
+## Database Safety
+
+The notebook's export uses `if_exists="replace"`, so rerunning it drops and recreates the existing `urbannest_data` table. Back up any table data that must be retained before running the export. Do not commit real database passwords; use environment variables or a local, untracked configuration for credentials.
